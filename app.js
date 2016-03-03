@@ -57,5 +57,17 @@ $('#list').on('click', '.complete-button', function(event) {
   })
 })
 
+$('#list').on('click', '.delete-button', function(event) {
+  var item = $(event.target).parent()
+  var itemId = item.attr('data-id')
+
+  var deleteItem = $.ajax({
+    type: 'DELETE',
+    url: "https://listalous.herokuapp.com/lists/kofinkansah/items/" + itemId,
+    success: function() {
+      item.remove()
+    }
+  })
+})
 
 
