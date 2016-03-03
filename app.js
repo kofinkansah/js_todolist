@@ -32,11 +32,30 @@ $('#add-form').on('submit', function(event) {
     url: "http://listalous.herokuapp.com/lists/kofinkansah/items",
     data: { description: itemDescription, completed: false }
   })
+  creationRequest.done(function(itemDataFromServer) {
+    addItemToPage(itemDataFromServer)
+  })
 })
 
-creationRequest.done(function(itemDataFromServer) {
-  addItemToPage(itemDataFromServer)
-})
 $('#list').on('click', '.complete-button', function(event) {
-  alert('trying to complete an item!')
+  var item = $(event.target).parent()
+  var isItemCompleted = item.hasClass('completed')
+  var itemId = item.attr('data-id')
+  
+  var updateRequest = $.ajax({
+    type: 'PUT',
+    url: "https://listalous.herokuapp.com/lists/kofinkansah/items/" + itemId,
+    data: { completed: !isItemCompleted }
+  })
+  
+  updateRequest.done(function(itemData) {
+    if (itemData.completed) {
+      item.addClass('completed')
+    } else {
+      item.removeClass('completed')
+    }
+  })
 })
+
+
+
